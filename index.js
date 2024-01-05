@@ -4,13 +4,12 @@ app.use(express.json());
 
 
 let otp;
-
+const otpGenerator = require('otp-generator');
+const Otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, digits: true });
 app.post('/sendotp', (req, resp) => {
-
     let number = req.body.number;
-
-    if (otp = Math.floor(100000 + Math.random() * 900000)) {
-        console.log(`otp send successfully and otp is ${otp}`);
+    if (Otp) {
+        console.log(`otp send successfully and otp is ${Otp}`);
         resp.json({
             "Mobile Number": number,
             "message": "otp send successfully",
@@ -27,9 +26,9 @@ app.post('/sendotp', (req, resp) => {
 
 app.get('/verifyotp/:votp', (req, resp) => {
 
-    votp = req.params.votp;
+    let votp = req.params.votp;
 
-    if (votp == otp) {
+    if (votp == Otp) {
         resp.json({
             "message": "Otp verified Successfully...",
         })
